@@ -4,3 +4,7 @@ twitter:
       - microservice
       - iot
       - spark
+kafka:
+  bootstrapAddress: "localhost:9092"
+  topic:
+    tweeter: stwitter_kafka

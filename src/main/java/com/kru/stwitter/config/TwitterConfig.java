@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.MessageChannels;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.messaging.MessageChannel;
 import twitter4j.Status;
 import twitter4j.TwitterStream;
@@ -50,11 +51,14 @@ public class TwitterConfig {
     }
 
     @Bean
-    IntegrationFlow twitterFlow(MessageChannel outputChannel) {
+    IntegrationFlow twitterFlow(MessageChannel outputChannel, KafkaTemplate<String, String> kafkaTemplate) {
         return IntegrationFlows.from(outputChannel)
                 .transform(Status::getText)
                 // TO DO : Kafka producer to push tweets to Kafka Stream
-                .handle(m -> log.info(m.getPayload().toString()))
+                .handle(m -> {
+                    log.info(m.getPayload().toString());
+                    kafkaTemplate.send(m);
+                })
                 .get();
     }
 
