@@ -59,12 +59,6 @@ public class TwitterMessageProducer extends MessageProducerSupport {
         twitterStream.clearListeners();
     }
 
-    private void receiveMessage() {
-
-        // TO DO :// Convert it to a message as appropriate and send it out
-        this.sendMessage(MessageBuilder.withPayload(null).build());
-    }
-
 
     class StatusListener extends StatusAdapter {
         @Override
